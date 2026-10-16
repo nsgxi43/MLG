@@ -1,0 +1,66 @@
+[
+  {
+    "name": "cycles_mutag.sh",
+    "path": "experiments/cycles_mutag.sh",
+    "sha": "1d8addc5c9b6fe2cddfe6b6193ac1e1b5aa536c2",
+    "size": 629,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/experiments/cycles_mutag.sh?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/experiments/cycles_mutag.sh",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/1d8addc5c9b6fe2cddfe6b6193ac1e1b5aa536c2",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/experiments/cycles_mutag.sh",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/experiments/cycles_mutag.sh?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/1d8addc5c9b6fe2cddfe6b6193ac1e1b5aa536c2",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/experiments/cycles_mutag.sh"
+    }
+  },
+  {
+    "name": "cycles_ptc_mr.sh",
+    "path": "experiments/cycles_ptc_mr.sh",
+    "sha": "bd549ed212cdebd0a91de75599e7570a33c3ce95",
+    "size": 818,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/experiments/cycles_ptc_mr.sh?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/experiments/cycles_ptc_mr.sh",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/bd549ed212cdebd0a91de75599e7570a33c3ce95",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/experiments/cycles_ptc_mr.sh",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/experiments/cycles_ptc_mr.sh?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/bd549ed212cdebd0a91de75599e7570a33c3ce95",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/experiments/cycles_ptc_mr.sh"
+    }
+  },
+  {
+    "name": "iterations_mutag.sh",
+    "path": "experiments/iterations_mutag.sh",
+    "sha": "539983817fe0c6a8bfc1d0081e87cc3b1867b646",
+    "size": 601,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/experiments/iterations_mutag.sh?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/experiments/iterations_mutag.sh",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/539983817fe0c6a8bfc1d0081e87cc3b1867b646",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/experiments/iterations_mutag.sh",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/experiments/iterations_mutag.sh?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/539983817fe0c6a8bfc1d0081e87cc3b1867b646",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/experiments/iterations_mutag.sh"
+    }
+  },
+  {
+    "name": "iterations_ptc_mr.sh",
+    "path": "experiments/iterations_ptc_mr.sh",
+    "sha": "c7537688dbda28558627ac20a20799aa7b460a96",
+    "size": 608,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/experiments/iterations_ptc_mr.sh?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/experiments/iterations_ptc_mr.sh",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/c7537688dbda28558627ac20a20799aa7b460a96",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/experiments/iterations_ptc_mr.sh",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/experiments/iterations_ptc_mr.sh?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/c7537688dbda28558627ac20a20799aa7b460a96",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/experiments/iterations_ptc_mr.sh"
+    }
+  }
+]

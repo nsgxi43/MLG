@@ -1,0 +1,450 @@
+[
+  {
+    "name": "analyse_graphs.py",
+    "path": "src/analyse_graphs.py",
+    "sha": "17a338ec7e8ecf809f6cab4cb85a6d4f9d19d613",
+    "size": 1201,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/analyse_graphs.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/analyse_graphs.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/17a338ec7e8ecf809f6cab4cb85a6d4f9d19d613",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/analyse_graphs.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/analyse_graphs.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/17a338ec7e8ecf809f6cab4cb85a6d4f9d19d613",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/analyse_graphs.py"
+    }
+  },
+  {
+    "name": "analyse_results.py",
+    "path": "src/analyse_results.py",
+    "sha": "dc5e4866ee50fd0086d306b7f459283e901dfec7",
+    "size": 2228,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/analyse_results.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/analyse_results.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/dc5e4866ee50fd0086d306b7f459283e901dfec7",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/analyse_results.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/analyse_results.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/dc5e4866ee50fd0086d306b7f459283e901dfec7",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/analyse_results.py"
+    }
+  },
+  {
+    "name": "baseline.py",
+    "path": "src/baseline.py",
+    "sha": "2b58986abbc2c2ed3b33950e5cfe76c7cef4a14a",
+    "size": 2770,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/baseline.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/baseline.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/2b58986abbc2c2ed3b33950e5cfe76c7cef4a14a",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/baseline.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/baseline.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/2b58986abbc2c2ed3b33950e5cfe76c7cef4a14a",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/baseline.py"
+    }
+  },
+  {
+    "name": "distances.py",
+    "path": "src/distances.py",
+    "sha": "519652a5c000a39a74681489cf80547e7b4bad97",
+    "size": 1085,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/distances.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/distances.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/519652a5c000a39a74681489cf80547e7b4bad97",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/distances.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/distances.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/519652a5c000a39a74681489cf80547e7b4bad97",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/distances.py"
+    }
+  },
+  {
+    "name": "features.py",
+    "path": "src/features.py",
+    "sha": "618f71e6540d935885adbf2aa389d83835c88b3d",
+    "size": 22133,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/features.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/features.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/618f71e6540d935885adbf2aa389d83835c88b3d",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/features.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/features.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/618f71e6540d935885adbf2aa389d83835c88b3d",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/features.py"
+    }
+  },
+  {
+    "name": "grid_search.py",
+    "path": "src/grid_search.py",
+    "sha": "995882f3d09f423ffa437c1b8cf3c62f0e7e66e3",
+    "size": 8163,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/grid_search.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/grid_search.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/995882f3d09f423ffa437c1b8cf3c62f0e7e66e3",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/grid_search.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/grid_search.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/995882f3d09f423ffa437c1b8cf3c62f0e7e66e3",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/grid_search.py"
+    }
+  },
+  {
+    "name": "grid_search_deg.py",
+    "path": "src/grid_search_deg.py",
+    "sha": "90ccc3442e9669ec38f450e5a210e29cfeb674c1",
+    "size": 7067,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/grid_search_deg.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/grid_search_deg.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/90ccc3442e9669ec38f450e5a210e29cfeb674c1",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/grid_search_deg.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/grid_search_deg.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/90ccc3442e9669ec38f450e5a210e29cfeb674c1",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/grid_search_deg.py"
+    }
+  },
+  {
+    "name": "grid_search_e_kernel.py",
+    "path": "src/grid_search_e_kernel.py",
+    "sha": "1459752f1f876824f511b4872d8c25fcc3882f3a",
+    "size": 6033,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/grid_search_e_kernel.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/grid_search_e_kernel.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/1459752f1f876824f511b4872d8c25fcc3882f3a",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/grid_search_e_kernel.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/grid_search_e_kernel.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/1459752f1f876824f511b4872d8c25fcc3882f3a",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/grid_search_e_kernel.py"
+    }
+  },
+  {
+    "name": "grid_search_pwl.py",
+    "path": "src/grid_search_pwl.py",
+    "sha": "c2b131b5b843a79f85343336dfe8e7b94366fd40",
+    "size": 9191,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/grid_search_pwl.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/grid_search_pwl.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/c2b131b5b843a79f85343336dfe8e7b94366fd40",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/grid_search_pwl.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/grid_search_pwl.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/c2b131b5b843a79f85343336dfe8e7b94366fd40",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/grid_search_pwl.py"
+    }
+  },
+  {
+    "name": "grid_search_v_kernel.py",
+    "path": "src/grid_search_v_kernel.py",
+    "sha": "07b440996e1333c53e1e09a1c5ef99002b7226ad",
+    "size": 6072,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/grid_search_v_kernel.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/grid_search_v_kernel.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/07b440996e1333c53e1e09a1c5ef99002b7226ad",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/grid_search_v_kernel.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/grid_search_v_kernel.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/07b440996e1333c53e1e09a1c5ef99002b7226ad",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/grid_search_v_kernel.py"
+    }
+  },
+  {
+    "name": "kernelgridsearchcv.py",
+    "path": "src/kernelgridsearchcv.py",
+    "sha": "e3793268e488c900a7e5279923db281580c1eb7b",
+    "size": 1909,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/kernelgridsearchcv.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/kernelgridsearchcv.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/e3793268e488c900a7e5279923db281580c1eb7b",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/kernelgridsearchcv.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/kernelgridsearchcv.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/e3793268e488c900a7e5279923db281580c1eb7b",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/kernelgridsearchcv.py"
+    }
+  },
+  {
+    "name": "kernels.py",
+    "path": "src/kernels.py",
+    "sha": "36c7c211cb9e7456218f3b88290aad646d01fed7",
+    "size": 964,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/kernels.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/kernels.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/36c7c211cb9e7456218f3b88290aad646d01fed7",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/kernels.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/kernels.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/36c7c211cb9e7456218f3b88290aad646d01fed7",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/kernels.py"
+    }
+  },
+  {
+    "name": "label_sequence.py",
+    "path": "src/label_sequence.py",
+    "sha": "805cafff6dd9c6f874e11f2362ce383cba1c65a6",
+    "size": 4373,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/label_sequence.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/label_sequence.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/805cafff6dd9c6f874e11f2362ce383cba1c65a6",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/label_sequence.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/label_sequence.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/805cafff6dd9c6f874e11f2362ce383cba1c65a6",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/label_sequence.py"
+    }
+  },
+  {
+    "name": "main.py",
+    "path": "src/main.py",
+    "sha": "53d2963a97314032beeeed68dc8bc9158af2017a",
+    "size": 9217,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/main.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/main.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/53d2963a97314032beeeed68dc8bc9158af2017a",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/main.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/main.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/53d2963a97314032beeeed68dc8bc9158af2017a",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/main.py"
+    }
+  },
+  {
+    "name": "p-wl_unlabelled.py",
+    "path": "src/p-wl_unlabelled.py",
+    "sha": "1bca950fdc237eb474cbaf6ba73215a63ffe1f63",
+    "size": 8071,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/p-wl_unlabelled.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/p-wl_unlabelled.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/1bca950fdc237eb474cbaf6ba73215a63ffe1f63",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/p-wl_unlabelled.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/p-wl_unlabelled.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/1bca950fdc237eb474cbaf6ba73215a63ffe1f63",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/p-wl_unlabelled.py"
+    }
+  },
+  {
+    "name": "p-wl_unlabelled_persistence_diagrams.py",
+    "path": "src/p-wl_unlabelled_persistence_diagrams.py",
+    "sha": "e8e67639177bdfe4ac59f7dd3d4fae2fbfd77e26",
+    "size": 3993,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/p-wl_unlabelled_persistence_diagrams.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/p-wl_unlabelled_persistence_diagrams.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/e8e67639177bdfe4ac59f7dd3d4fae2fbfd77e26",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/p-wl_unlabelled_persistence_diagrams.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/p-wl_unlabelled_persistence_diagrams.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/e8e67639177bdfe4ac59f7dd3d4fae2fbfd77e26",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/p-wl_unlabelled_persistence_diagrams.py"
+    }
+  },
+  {
+    "name": "persistence_diagrams.py",
+    "path": "src/persistence_diagrams.py",
+    "sha": "aacd08793fe4c40ece70c5008d4b8d2fca38eeb8",
+    "size": 9973,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/persistence_diagrams.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/persistence_diagrams.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/aacd08793fe4c40ece70c5008d4b8d2fca38eeb8",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/persistence_diagrams.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/persistence_diagrams.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/aacd08793fe4c40ece70c5008d4b8d2fca38eeb8",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/persistence_diagrams.py"
+    }
+  },
+  {
+    "name": "persistence_distributions.py",
+    "path": "src/persistence_distributions.py",
+    "sha": "d34ad112e9abdf331401fbabbd815918c398edca",
+    "size": 5436,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/persistence_distributions.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/persistence_distributions.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/d34ad112e9abdf331401fbabbd815918c398edca",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/persistence_distributions.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/persistence_distributions.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/d34ad112e9abdf331401fbabbd815918c398edca",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/persistence_distributions.py"
+    }
+  },
+  {
+    "name": "run_baselines.sh",
+    "path": "src/run_baselines.sh",
+    "sha": "0ce8cecfbf19cb455504a2af7bf57ff5eeadc565",
+    "size": 182,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/run_baselines.sh?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/run_baselines.sh",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/0ce8cecfbf19cb455504a2af7bf57ff5eeadc565",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/run_baselines.sh",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/run_baselines.sh?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/0ce8cecfbf19cb455504a2af7bf57ff5eeadc565",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/run_baselines.sh"
+    }
+  },
+  {
+    "name": "run_experiments.sh",
+    "path": "src/run_experiments.sh",
+    "sha": "5b9867d66e4a6df10bc8ae868eb79376ee52d844",
+    "size": 129,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/run_experiments.sh?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/run_experiments.sh",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/5b9867d66e4a6df10bc8ae868eb79376ee52d844",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/run_experiments.sh",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/run_experiments.sh?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/5b9867d66e4a6df10bc8ae868eb79376ee52d844",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/run_experiments.sh"
+    }
+  },
+  {
+    "name": "run_grid_searches.sh",
+    "path": "src/run_grid_searches.sh",
+    "sha": "874843128e575ddfac06cfa5a713394d53ca358d",
+    "size": 177,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/run_grid_searches.sh?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/run_grid_searches.sh",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/874843128e575ddfac06cfa5a713394d53ca358d",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/run_grid_searches.sh",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/run_grid_searches.sh?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/874843128e575ddfac06cfa5a713394d53ca358d",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/run_grid_searches.sh"
+    }
+  },
+  {
+    "name": "show_feature_vectors.py",
+    "path": "src/show_feature_vectors.py",
+    "sha": "15c9104b1475429fc5385b677e91fd87592708f8",
+    "size": 4157,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/show_feature_vectors.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/show_feature_vectors.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/15c9104b1475429fc5385b677e91fd87592708f8",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/show_feature_vectors.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/show_feature_vectors.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/15c9104b1475429fc5385b677e91fd87592708f8",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/show_feature_vectors.py"
+    }
+  },
+  {
+    "name": "show_metric.py",
+    "path": "src/show_metric.py",
+    "sha": "8dd41efc4454ea7f706400ba44f7ac6e29746518",
+    "size": 2425,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/show_metric.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/show_metric.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/8dd41efc4454ea7f706400ba44f7ac6e29746518",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/show_metric.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/show_metric.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/8dd41efc4454ea7f706400ba44f7ac6e29746518",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/show_metric.py"
+    }
+  },
+  {
+    "name": "subsample_graphs.py",
+    "path": "src/subsample_graphs.py",
+    "sha": "8b071b3aba7a7b88602fef259ab7d79b02eb53a3",
+    "size": 1734,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/subsample_graphs.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/subsample_graphs.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/8b071b3aba7a7b88602fef259ab7d79b02eb53a3",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/subsample_graphs.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/subsample_graphs.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/8b071b3aba7a7b88602fef259ab7d79b02eb53a3",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/subsample_graphs.py"
+    }
+  },
+  {
+    "name": "topology.py",
+    "path": "src/topology.py",
+    "sha": "b2b5d78675a19fb9777059b666e69aec761ce6aa",
+    "size": 10013,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/topology.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/topology.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/b2b5d78675a19fb9777059b666e69aec761ce6aa",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/topology.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/topology.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/b2b5d78675a19fb9777059b666e69aec761ce6aa",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/topology.py"
+    }
+  },
+  {
+    "name": "utilities.py",
+    "path": "src/utilities.py",
+    "sha": "746ab8b02d4c6f085d9db5955ee041b0480b9bba",
+    "size": 1313,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/utilities.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/utilities.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/746ab8b02d4c6f085d9db5955ee041b0480b9bba",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/utilities.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/utilities.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/746ab8b02d4c6f085d9db5955ee041b0480b9bba",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/utilities.py"
+    }
+  },
+  {
+    "name": "visualization.py",
+    "path": "src/visualization.py",
+    "sha": "1ea5c5e0b06ef9906adaab4ca6a08465f2329f76",
+    "size": 2569,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/visualization.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/visualization.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/1ea5c5e0b06ef9906adaab4ca6a08465f2329f76",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/visualization.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/visualization.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/1ea5c5e0b06ef9906adaab4ca6a08465f2329f76",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/visualization.py"
+    }
+  },
+  {
+    "name": "weisfeiler_lehman.py",
+    "path": "src/weisfeiler_lehman.py",
+    "sha": "56f3a4319ddcd8d9f7fd85858483d4eff7941771",
+    "size": 3750,
+    "url": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/weisfeiler_lehman.py?ref=master",
+    "html_url": "https://github.com/BorgwardtLab/P-WL/blob/master/src/weisfeiler_lehman.py",
+    "git_url": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/56f3a4319ddcd8d9f7fd85858483d4eff7941771",
+    "download_url": "https://raw.githubusercontent.com/BorgwardtLab/P-WL/master/src/weisfeiler_lehman.py",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/BorgwardtLab/P-WL/contents/src/weisfeiler_lehman.py?ref=master",
+      "git": "https://api.github.com/repos/BorgwardtLab/P-WL/git/blobs/56f3a4319ddcd8d9f7fd85858483d4eff7941771",
+      "html": "https://github.com/BorgwardtLab/P-WL/blob/master/src/weisfeiler_lehman.py"
+    }
+  }
+]

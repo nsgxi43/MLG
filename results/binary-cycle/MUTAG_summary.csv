@@ -1,0 +1,2 @@
+dataset,method,setting,accuracy_mean,accuracy_std,macro_f1_mean,macro_f1_std,repeats
+MUTAG,P-WL-C-Binary,selected,0.8605555555555556,0.011644954807562039,0.8430248967838792,0.01601432078512077,10

@@ -1,0 +1,702 @@
+   A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+
+
+                          Bastian Rieck * 1 Christian Bock * 1 Karsten Borgwardt 1
+
+
+                 Abstract                           paths (Borgwardt & Kriegel 2005), to random walks (Gärt-
+                                                            ner et al. 2003, Kashima et al. 2003, Sugiyama & Borg-
+    The Weisfeiler–Lehman graph kernel exhibits                                                        wardt 2015). One of the most powerful substructures is the
+     competitive performance in many graph classiﬁ-                                                                    set of subtree patterns (Ramon & Gärtner 2003), i.e. pat-
+     cation tasks.  However, its subtree features are                                                                 terns based on rooted subgraphs of a graph. Their compu-
+     not able to capture connected components and                                                                    tational complexity made their applicability somewhat lim-
+     cycles, topological features known for character-                                                                        ited, until the Weisfeiler–Lehman (WL) graph kernel frame-
+     ising graphs. To extract such features, we lever-                                                 work (Shervashidze & Borgwardt 2009, Shervashidze et al.
+    age propagated node label information and trans-                                                      2011) was developed. Properly trained, it still constitutes
+    form unweighted graphs into metric ones. This                                                              the state-of-the-art method for many graph classiﬁcation
+     permits us to augment the subtree features with                                                                    tasks. The framework is based on the idea of iteratively
+     topological information obtained using persistent                                                          propagating (node) label information through a graph, lead-
+    homology, a concept from topological data anal-                                                           ing to a feature vector representation that can be used to
+      ysis. Our method, which we formalise as a gener-                                                              assess the dissimilarity of two graphs.
+     alisation of Weisfeiler–Lehman subtree features,
+     exhibits favourable classiﬁcation accuracy and       One of the disadvantages of this framework is that its re-
+      its improvements in predictive performance are          labelling step, i.e. the step in which subtree patterns are
+    mainly driven by including cycle information.           being compressed, is somewhat “brittle”: labels are only
+                                                   compared with a Dirac kernel, making their dissimilarity a
+                                                            coarse function. Moreover, the subtree feature vector only
+1. Introduction                                          contains counts of compressed labels and can neither ac-
+                                                         count for their relevance with respect to the topology of the
+Graph-structured data sets are ubiquitous in a variety of    graph nor capture connected components and cycles, both
+different application domains, each of them posing a sep-    of which are important and interpretable features for char-
+arate challenge while also requiring different tasks to be     acterising graphs (Rieck et al. 2018, Sizemore et al. 2017).
+solved. A common task involves graph classiﬁcation, for   We thus propose an enhancement of the original WL stabil-
+which a variety of methods exists. These methods comprise     isation procedure that uses recent advances in topological
+convolutional neural networks (Duvenaud et al. 2015), re-    data analysis (Munch 2017) to alleviate these issues. Our
+current neural networks (Lei et al. 2017), or Hilbert space    contributions are as follows:
+methods (Vishwanathan et al. 2010), the latter also being
+                                                                            - We measure the relevance of topological features (con-referred to as graph kernels. While several approaches for
+                                                            nected components and cycles) in graphs and use themdeﬁning graph kernels exist, the most common one uses the
+                                                                   to deﬁne a novel set of WL subtree features, which weR-convolution framework (Haussler 1999), which makes
+                                                  show to be a generalised version of the original ones.it possible to deﬁne the similarity between two graphs as a
+                                                                            - We develop a topology-based kernel that uses an iterativefunction of the similarity of their substructures.
+                                                                  variant of the WL stabilisation procedure to classify non-
+Substructures that have been used for graph classiﬁca-      attributed graphs.
+tion range from graphlets (Shervashidze et al. 2009), i.e.     - We demonstrate  that our proposed  features perform
+small non-isomorphic graphs of ﬁxed size, over shortest      favourably on a range of graph classiﬁcation benchmark
+                                                               data sets.  In particular, we empirically show that the
+  *Equal contribution 1Department of Biosystems Science and
+                                                                inclusion of cycle information yields classiﬁcation accu-Engineering, ETH Zurich, 4058 Basel, Switzerland. Correspon-
+dence to: Bastian Rieck <bastian.rieck@bsse.ethz.ch>, Karsten      racy improvements over state-of-the-art methods.
+Borgwardt <karsten.borgwardt@bsse.ethz.ch>.
+
+Proceedings of the 36 th International Conference on Machine
+Learning, Long Beach, California, PMLR 97, 2019. Copyright
+2019 by the author(s).
+                  A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+                               {A A C}  {B}
+                                                         w1
+         B    A               B    A              Y    X
+                                                  w2      w3
+                                1. WL                            2. Distance                            3. PH
+     C       A            C       A             Z       X
+                              {B}       {B}
+
+        Input graph G                    Multiset labels               Weighted graph G′                  Barcode
+
+
+Figure 1. Schematic illustration of our proposed P-WL feature generation process for a labelled graph G. Step 1: In an initial neighbour-
+hood propagation step, Weisfeiler–Lehman (WL) label multisets are generated for each node (depicted by vertex annotations in curly
+braces). Step 2: Next, we calculate a metric between these multisets according to Deﬁnition 2 in order to obtain edge weights. Together
+with the compressed multisets (X, Y, Z), we thus construct a weighted relabelled graph G′. Step 3: Finally, we calculate persistent
+homology (PH) features as described in Section 2.3.2 and attribute them to each node in G′. The set of graph features is iteratively
+extended by h repetitions of Steps 1–3 with G′ and extending its feature vector.
+
+
+2. Method                                                of the graphs are equal, there is a high probability that the
+                                                   two graphs are isomorphic (Babai & Kucera 1979).
+Our method builds on the seminal Weisfeiler–Lehman sta-
+bilisation algorithm (Douglas 2011, Weisfeiler & Lehman   On an abstract level, the WL iteration can be seen as a
+1968) and on recent advances in topological data analysis,    process that, given two labelled graphs G and G′, gener-
+namely persistent homology (Edelsbrunner & Harer 2008).    ates a sequence of labelled graphs (G0, G′0), ..., (Gh, G′h).
+In the following, we ﬁrst give a brief overview of the WL   To simplify the notation, we will also write l(h)u   to denote
+algorithm. We then show how to leverage multi-scale infor-    the label of a vertex u in iteration h of the procedure,
+mation to obtain a set of features based on topological in-   and thus drop the notion of vertex colours. Shervashidze
+variants (connected components and cycles) and elucidate     et al. (2011) showed that any valid (graph) kernel can be
+its connection to the WL subtree features (Shervashidze &    used to obtain a valid graph kernel for the whole sequence
+Borgwardt 2009, Shervashidze et al. 2011).                   of graphs.  Among others, they present the Weisfeiler–
+                                               Lehman subtree kernel, which represents each iteration of
+2.1. Weisfeiler–Lehman Stabilisation                        the algorithm by a set of feature vectors that contain the
+                                                          counts of each individual label. Each iteration h of the sta-
+The 1-dimensional WL stabilisation algorithm was initially                                                                    bilisation procedure thus results in a feature vector
+developed as a test for graph isomorphism (Weisfeiler &
+                                                                        [                 ]
+Lehman 1968).  It is also known as colour reﬁnement or                 ϕ(h)WL :=  c(h)(l0), c(h)(l1), . . .  ,           (1)canonical labelling.  In the following, we assume that
+we are given a graph G = (V, E) with a label function
+                                                    where li denotes the ith compressed label that appears in
+l: V →Σ that assigns each vertex v ∈V a label l(v). The
+                                                                    iteration h, and c(h) is a counting function. Feature vectors
+labels constitute the initial colours C(0) of the algorithm
+                                                             of all iterations are concatenated to form one large feature
+so that C(0)(v) = l(v) for every vertex v ∈V . For each
+                                                             vector ϕWL(G) for every graph G. The similarity of twovertex v and each iteration h, the algorithm creates a new
+                                                         graphs is then assessed by calculating a linear kernel be-
+set of colours from the colour C(h−1)(v) and the colours
+                                                     tween their feature vectors. This feature vector assignment
+C(h−1)(w) of every vertex w that is adjacent to v. This
+                                                         only requires a perfect hashing function; by deﬁnition of
+multiset of colours is then mapped to a new colour. The
+                                                              the algorithm, no more than 2n unique labels are required
+mapping is unique in the sense that the same multiset al-
+                                                            per iteration. The algorithm is highly efﬁcient, having a
+ways maps to the same colour. Afterwards, the next iter-
+                                                         runtime complexity of O(hm), where h denotes the num-
+ation begins, and the process stops as soon as the list of
+                                                            ber of iterations and m denotes the number of edges. One
+colours stabilises, meaning that for some h, no new colours
+                                                          disadvantage is that the perfect hashing scheme is some-
+are being created.
+                                                    what brittle—one change of a label in a neighbourhood
+This procedure can be used to detect whether two graphs G     will result in two vertices never getting assigned the same
+and G′ are isomorphic to each other, i.e. whether there ex-   compressed label again. The assignment of counts to a cer-
+ists a bijection between their vertex sets V and V ′: for two     tain label is thus somewhat arbitrary. We aim to address
+graphs with at most n vertices each, the algorithm may stop     this issue by providing an algorithm that also takes into ac-
+as soon as n + 1 distinct colours have been encountered. In    count how much any label contributes to the topology of
+this case, the two graphs are guaranteed not to be isomor-    the graph at multiple scales. This requires using methods
+phic to each other.  If, however, the two colour sequences    from the ﬁeld of computational topology.
+                  A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+2.2. Computational Topology                          ogy requires a ﬁltration, i.e. a sequence of nested subgraphs
+                                                       such that
+Computational topology refers to a family of methods
+that captures topological features such as connected com-                                      ∅⊆G0 ⊆G1 ⊆· · · ⊆Gk−1 ⊆Gk = G      (3)
+ponents.  Originally developed for the analysis of high-
+dimensional manifold data sets (Edelsbrunner & Harer    and each Gi is of the form Gi = (V, Ei ⊆E). Hence, only
+2010),  it has recently seen increased use in the analysis    the edges change between different steps of the iteration.
+of graphs or networks (Carstens 2016, Horak et al. 2009,    There are alternative formulations of ﬁltrations that permit
+Rieck et al. 2018, Rieck et al. 2019). We brieﬂy review the    the vertex set to vary (Rieck et al. 2018), but we do not con-
+most important topics to formalise the problem and develop     sider them in this paper because of their higher complex-
+some intuition.                                                              ity. Since the vertex set remains ﬁxed and only edges are
+                                                     added in each step, the number of connected components
+2.2.1. TOPOLOGICAL FEATURES                         can only decrease (by introducing an edge that merges two
+                                                        connected components, thus “destroying” one of them) orGiven a topological space M, such as a manifold, k-
+                                                       remain the same (by introducing an edge that connects two
+dimensional topological features are represented as ele-
+                                                                  vertices that are already in the same connected component)
+ments of the kth homology group Hk(M).  In lower di-
+                                                             as we go from Gi to Gi+1. Analogously, the number of cy-mensions, i.e. for k ∈{0, 1, 2}, these features are also
+                                                                 cles can only increase (by introducing an edge that closesknown as connected components, cycles, and voids, respec-
+                                                             or “creates” a cycle).
+tively. Even though there are several algorithms for the
+extraction of higher-dimensional topological features from     Persistent homology thus tracks changes in connected com-
+graphs (Jonsson 2008), we restrict1 ourselves to k ∈{0, 1}    ponents and cycles over the complete ﬁltration: for each
+in this paper, which corresponds to connected components    component that is destroyed in a graph Gi of the ﬁltration,
+and cycles. Given a graph G, the Euler characteristic for-    a tuple of the form (0, i) is stored by the algorithm, while
+mula (Gross & Tucker 1987, p. 135) relates these two con-    every cycle that is created in, say, a graph Gj is assigned
+cepts. It states that the number of cycles in G is               the tuple (j, ∞). These tuples are also known as index per-
+                                                                sistence tuples (Zomorodian & Carlsson 2005). Given an
+                 β1 = m −n + β0,                 (2)
+                                                              associated sequence of real-valued weights
+where m denotes the number of edges, n denotes the num-
+                                                                    a0 ≤a1 ≤· · · ≤ak−1 ≤ak             (4)ber of vertices, and β0 denotes the number of connected
+components. Using a disjoint set data structure (Cormen
+                                                         with the same cardinality as the ﬁltration, each tuple (i, j)
+et al. 2009, Chapter 21), the number of connected compo-
+                                                          corresponds to a pair (ai, aj) that can be seen as a pointnents of a graph can be determined in almost linear time of
+                                                                 in R2∞:= R × {R ∪{∞}}.  If both ai and aj are ﬁ-its size (Hopcroft & Tarjan 1973).
+                                                                         nite, the quantity pers(ai, aj) := |aj −ai| is referred to
+The number of connected components β0 and the num-    as the persistence of a pair (Edelsbrunner et al. 2002);
+ber of cycles β1 constitute a simple graph invariant:  if     large values imply that a feature persists over multiple
+(β0, β1) ̸= (β′0, β′1) for two graphs G, G′, the graphs can-    scales because it appears in many subgraphs of the ﬁltra-
+not be isomorphic (Hatcher 2002, pp. 103–133). Equality     tion and might thus have a higher importance (Carlsson
+of the tuples is a necessary—but not sufﬁcient—condition    2009, Edelsbrunner et al. 2002).   If aj = ∞, we set
+for the existence of an isomorphism.                          pers(ai, aj) :=  |ai|.  These pairs are often represented
+                                                             as horizontal line segments in R2, where the vertical co-
+2.2.2. PERSISTENT HOMOLOGY                             ordinate y may be assigned arbitrarily, so that each pair
+                                                   becomes a line from (ai, y) to (aj, y) while segments of in-
+For many graphs, in particular labelled ones, information
+                                                              ﬁnite length are cropped. This representation is known as a
+of the form (β0, β1) is too coarse to be useful. Thus, per-
+                                                              persistence barcode (Ghrist 2008); together with a related
+sistent homology (Edelsbrunner & Harer 2008, Edelsbrun-
+                                                                representation, it can be shown to be a stable descriptor of
+ner & Morozov 2014) was developed to describe topologi-
+                                                              topological activity (Cohen-Steiner et al. 2007).
+cal spaces in terms of multi-scale topological features. For
+clarity of exposition, we only describe this process in terms    Similar to the Euler characteristic formula from Eq. 2, per-
+of graphs2. Given a graph G = (V, E), persistent homol-    sistence tuples induce a relation on the graph: for tuples
+                                                                    that correspond to the merge of two connected components,
+     1It is possible to generalise our methods to include higher-
+                                                     one vertex is paired with one edge, while for tuples that
+dimensional features, even though their calculation has a higher
+computational complexity.                                     give rise to a cycle, exactly one edge of the cycle is marked.
+     2It works equally well for higher-dimensional manifolds, but   An edge cannot be paired with a vertex and marked at the
+this is beyond the scope of this paper.                       same time (Edelsbrunner et al. 2002), so a graph with n
+                  A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+vertices and m edges always gives rise to exactly n + m    For a vertex u and its neighbour v in a graph, we extend
+persistence tuples. The uniqueness of the pairing relation    the previous distance to a distance between the compressed
+permits us to write pers(v) and pers(u, v) to denote the     label of the previous WL iteration (h −1) and the multiset
+persistence of a vertex v (which we consider to create a     label of the current iteration (h).
+certain connected component) or an edge (u, v) (which we                                                      Deﬁnition 2 (Label distance). Given two adjacent vertices
+consider to create a cycle), respectively. Hence, we do not                                            u and v in a graph, let l(h)u  and l(h)v   refer to their multiset
+have to calculate the persistence of edges that are paired                                                               label in iteration h of the stabilisation procedure. We deﬁne
+with a vertex because they are already being accounted for.                                                                   their distance as
+                                                                 [             ]    (      )
+2.3. A Persistent Weisfeiler–Lehman Procedure            dL(u, v) :=  l(h−1)u     ̸= l(h−1)v   + dM  l(h)u  , l(h)v  + τ, (6)
+In the following, we describe our methods. We ﬁrst de-
+ﬁne a novel procedure for leveraging the WL multisets to    where [·] is an Iverson bracket, i.e. a function that is 1 when-
+obtain weighted graphs, after which we describe how to    ever the condition in the bracket is satisﬁed, and 0 other-
+obtain persistent subtree features. We also explain how to    wise, and τ ∈R>0 is an offset. We use τ := 1 in this paper.
+rephrase the original WL subtree features as a special case
+of our method.  Furthermore, we demonstrate how to in-
+                                       We can show that this function4 constitutes a metric on la-clude cycle features, which (a) have been largely ignored
+                                                              belled graphs, thus yielding a suitable ﬁltration.in the literature so far due to their computational complex-
+ity (Horváth et al. 2004), and (b) turn out to be beneﬁcial   Theorem 1. dL(·, ·) is a metric on a node-labelled graph
+for the classiﬁcation performance.                           provided that the graph does not have self-loops, i.e. edges
+                                                   whose source and target node are the same.
+2.3.1. A FILTRATION FOR NODE-LABELLED GRAPHS
+
+Typically, ﬁltrations in computational topology require the    Proof. We ﬁrst note that the function in the Iverson bracket
+use of a metric3, i.e. a distance function, deﬁned on sub-     is a metric, namely the discrete metric on a topological
+structures of the objects in an input data set (Ghrist 2008).    space (Ó Searcóid 2007, p. 4). Moreover, the multiset dis-
+The resulting topological features then represent the data    tance is a metric by its deﬁnition because the Minkowski
+set at different scales; features that only exist at small scales    distance is a metric for p > 0.  Last, τ can be seen as
+are considered to be noise. However, there are currently    a uniform metric on the graph edges, assigning each edge
+no algorithms for obtaining a ﬁltration that handles graphs    (u, v) the same value. This only violates the conditions of a
+with node labels. We thus propose a new method that em-    metric if self-loops exist, because a metric d has to satisfy
+ploys the WL stabilisation procedure (Section 2.1). More    d(x, y) = 0 if and only if x = y. This case never occurs
+precisely, in iteration h of the procedure, we deﬁne a dis-    unless the graph has a self-loop. We may thus treat each
+tance between the label multisets C(h)(u) and C(h)(v) of    term as a metric on the graph vertices. Since the sum of
+two vertices u and v. We then use this distance to obtain    two metrics is a metric, the claim follows.
+edge weights, which in turn can be used to obtain a ﬁltra-
+tion. First, we deﬁne a distance between multisets.
+                                                     Using the preceding theorem, we thus obtain a weighted
+Deﬁnition 1 (Multiset distance). Let A = {la11  , la22  , . . . }    graph at each stabilisation step h, from which we derive a
+and B = {lb11 , lb22 , . . . } be two multisets that are deﬁned     ﬁltration by sorting all edge weights in ascending order, i.e.
+over the same label alphabet {l1, l2, . . . }, where ai and bi   w0 ≤w1 ≤w2 ≤. . . , and deﬁne the set of edges Ei for
+refer to the number of occurrences of label li in each multi-   Gi in Eq. 3 as
+set, respectively. We transform each set into a vector of its
+counts, leading to x := [a1, a2, . . . ] and y := [b1, b2, . . . ].         Ei := {(u, v) | (u, v) ∈E, w(u, v) ≤wi},     (7)
+Given p ∈R>0, we calculate the multiset distance between
+x and y as                                           where w(u, v) refers to the weight of an edge (u, v). Since
+                                                         weights encode distances, large edge weights are assigned
+                                               p               whenever the two vertices of an edge are dissimilar in terms         (∑     ) 1
+          dM(x, y) :=       |ai −bi|p     ,          (5)    of their neighbouring labels.
+                                          i
+                                                                                   It is interesting to observe the effect of h on the distances.
+i.e. the pth Minkowski distance. The parameter p has the     Intuitively, larger values of h have a “smoothing” effect on
+role of a smoothing parameter.                                the distance between two nodes. For the initial case h = 0,
+
+    3In the supplementary materials, we discuss alternative dissim-      4We also present a recursively-deﬁned variant of this function
+ilarity measures, such as the Kullback–Leibler divergence.            in the supplementary materials.
+                  A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+Algorithm 1 Persistent Subtree Feature Generation          For a graph G with n  vertices and m  cycles,  this
+                                                         procedure  results  in n persistence tuples of the formInput:  Graph G = (V, E), number of iterations H
+                                                             {(0, wi1), (0, wi2), . . . , (0, win)} and m tuples of the form  1: for h ∈{0, . . . , H −1} do
+                                                         {(wj1, ∞), (wj2, ∞), . . . , (wjm, ∞)}, where each w rep-  2:    ϕ(h)P-WL := ∅, ϕ(h)P-WL-C := ∅                                                                resents a  certain edge weight of the graph.   Letting
+  3:     // Get WL multiset labels (Shervashidze et al. 2011)
+                                                                  {l0, l1, . . . } refer to the sequence of compressed vertex la-  4:   L(h) := {l(h)v    | v ∈V } ←WL_LABELS(G, h)                                                               bels at iteration h, we deﬁne the persistent subtree feature
+  5:     // Use Eq. 6 to assign each edge (u, v) its weight
+                                                             vector as
+  6:    for all (u, v) ∈E do
+                                                                         [                  ]
+  7:     w(u, v) ←dL(u, v)
+                                                                       ϕ(h)P-WL :=  p(h)(l0), p(h)(l1), . . .  ,         (9)  8:   end for
+  9:     // Compress and re-assign vertex labels
+10:    for all v ∈V do    (       )                 where p(h)(·) sums persistence values of vertices with a
+11:       l(h)v  ←COMPRESS l(h−1)v      , l(h)v                      given label, i.e.
+12:   end for                     ∑
+13:     // Calculate persistent subtree features                                    p(h)(li) :=       pers(v)p,           (10)
+14:    for all v [∈V ]do       [   ]                                                             l(v)=li
+15:      ϕ(h)P-WL  l(h)v   ←ϕ(h)P-WL  l(h)v  + pers(v)p
+                                                     and p > 0 is a smoothing factor, which we choose to be
+16:   end for
+                                                              the same as the one used for the distance calculations in
+17:     // Calculate persistent cycle features
+                                                        Eq. 5. Subsequently, we will use ϕ(h)P-WL[l(v)] to denote the18:    for all (u, v) ∈E do               [   ]          [   ]                      respective component of a label l(v) in a feature vector.
+19:      ϕ(h)P-WL-C  l(h)v   ←ϕ(h)P-WL-C  l(h)v  + pers(u, v)p
+                                                         This equation can be seen as a more complex variant of
+20:   end for
+                                                        Eq. 1.   It does not merely count how often a certain la-
+21: end for[                               ]
+                                                              bel occurs, but each occurrence is weighted according to
+22: return  ϕ(0)P-WL, ϕ(0)P-WL-C, . . . ϕ(H−1)P-WL  , ϕ(H−1)P-WL-C                                                                                its persistence, i.e. according to the relevance of the corre-
+                                                       sponding topological feature in the graph. Feature vectors
+                                                              are then concatenated for different values of h just like for
+Eq. 6 reduces to                                              the original WL subtree features. In addition to these fea-
+            {                                                                     tures, our ﬁltration also results in information about the cy-
+                       τ         if l(u) = l(v)
+          dL(u, v) =                                  (8)     cles, without any computational overhead. More precisely,
+                       τ + 1  otherwise                  while listing cycles in graphs is known to be computation-
+                                                                    ally demanding (Horváth et al. 2004), the pairing relation
+because  there  are no previous  labels  to  fall back  to.
+                                                             as introduced at the end of Section 2.2.2 makes it possible
+Since subsequent iterations include more information about
+                                                                 to count cycles in a graph. This leads us to deﬁne the per-
+neighbours, this rigid initial distance will become progres-
+                                                                     sistent cycle feature vector as
+sively smoother.
+                                                                          [                  ]
+                                                                       ϕ(h)P-WL-C :=  z(h)(l0), z(h)(l1), . . .  ,       (11)2.3.2. P-WL FOR NODE-LABELLED GRAPHS
+
+Having introduced the required terminology and developed
+                                                    where z(h)(·) sums persistence values of cycle edges whose
+a suitable ﬁltration, we are now ready to describe a persis-
+                                                          source or target node matches a given label, i.e.
+tent form of the WL subtree feature generation method for
+node-labelled graphs. We refer to this method as P-WL;         ∑
+                                                                                    z(h)(li) :=        pers(u, v)p,         (12)Algorithm 1 shows the full feature calculation procedure.
+In the following, we will provide details for the individual                                  li∈l(u,v)
+steps. A high-level description of our algorithm in iteration
+                                                    where p > 0 is the same smoothing factor as in Eq. 10,
+h consists of the following operations:
+                                                             (u, v) ∈E, and l(u, v) := {l(u), l(v)}.  This counts all
+  1. Perform the WL stabilisation procedure and assign ev-    cycles twice, which does not impact classiﬁcation perfor-
+     ery vertex v in the graph a multiset label l(h)u   .           mance.  Subsequently, we refer to the method that inte-
+  2. Use the metric from Deﬁnition 6 to assign a weight to     grates cycle features as P-WL-C. As we will demonstrate
+    each edge of the graph. Create a ﬁltration by sorting     in the experimental section, the integration of cycle features
+      all edges according to their edge weight.               can be beneﬁcial for several data sets, in particular those
+  3. Use the ﬁltration to calculate persistent homology of     that exhibit pronounced cycles (such as the PTC-MR data
+     the weighted graph.                                          set of molecular graphs).
+                  A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+Properties of ϕ(h)P-WL and ϕ(h)P-WL-C  Since we use the dis-    able to leverage more topological information. Our method
+tance from Deﬁnition 2, we know that pers(v) ≥τ for ev-     is motivated by the insight that non-attributed graphs result
+ery vertex v: in the worst case, all labels coincide, such that     in a set of compressed WL labels that correspond to the de-
+all parts of the sum become zero except for τ. As τ > 0, the    gree of a vertex. The distance between each of these labels
+ith entry in ϕ(h)P-WL is zero if and only if the ith label does not     is uniform by construction; hence the algorithm treats all
+occur in the respective graph. This demonstrates the neces-    different degrees the same. By contrast, we can incorporate
+sity of using τ; a classiﬁer trained on these features should    degree information in a continuous manner if we restrict
+be able to distinguish between features that are not impor-    ourselves to topological descriptors. For a non-attributed
+tant for the topological structure (small persistence values)    graph G = (V, E), we perform the following steps:
+and those that are non-existent (zero). The same reasoning                                                                      1. Assign each vertex v ∈V  its degree deg(v) as an
+applies to the persistent cycle features.                                                                                  initial attribute value f(v).
+                                                                      2. Replace f(v) by (deg(v)+1)−1(f(v)+∑u∼v f(u)),
+Computational complexity  Calculating persistent fea-       where u ∼v denotes adjacent vertices u and v.
+tures from a ﬁltration requires an additional sorting of       3. Assign  each  edge  (u, v)  ∈  E  a  weight  of
+all  edges,  which has a computational complexity  of        max(f(u), f(v)) and obtain a ﬁltration by sorting all
+O(m log m) for a graph with m edges. The calculation        edges according to their edge weight.
+of persistence tuples has a complexity of O(m · α(m)),      4. Calculate persistent homology of the ﬁltration.
+where α(·) is the extremely slow-growing inverse of the
+                                                         Step 2 can be repeated multiple times. This has the effect ofAckermann function; in practice, it is linear in the number
+                                                      smoothing degree information within a graph; in the limit,of edges (Chen & Kerber 2013). This brings up the total
+                                                                            all vertices will have a similar f(v) value. The topologicalruntime complexity to O(hm log m), in comparison to the
+                                                                features calculated by this procedure are of the same formcomplexity O(hm) of the original WL subtree feature cal-
+                                                             as in Section 2.3.2. Letting D refer to the persistence tuplesculation (Shervashidze et al. 2011).
+                                                             of G that correspond to the vertices, i.e. the tuples of the
+                                                    form {(0, wi1), (0, wi2), . . . , (0, win)}, we can calculate a2.3.3. ϕ(h)WL AS A SPECIAL CASE OF ϕ(h)P-WL                                                              topological kernel kPSS between the tuples D and D′ of
+It is possible to rephrase the generation of the original WL    two graphs G and G′ as
+subtree feature vectors, i.e. ϕ(h)WL, in terms of persistent fea-        ∑  −∥x−y∥2     −∥x−y∥2
+                                                                                                         8σ  −e   8σ     ,  (13)ture vectors, provided the graph does not exhibit self-loops.     kPSS (h)(D, D′) := c−1     e
+In this case, let d(u, v) := 1 for all edges (u, v) in the graph.                       x∈D, y∈D′
+Since no self-loops exist, this is a discrete metric. Now
+                                                    where c := 8πσ for a smoothing parameter σ ∈R, andwi1 = wi2 = · · · = 1 for all persistence tuples, so Eq. 9
+                                                                                         ¯y denotes a set of tuples that has been “mirrored” suchsimpliﬁes to a count function again. As a consequence, the
+                                                                    that (0, wi1) becomes (wi1, 0), for example. This expres-feature vector is equal to the one calculated in Eq. 1, mak-
+ing ϕ(h)WL a special case of ϕ(h)P-WL.                                sion, the persistence scale-space-kernel (Reininghaus et al.                                                           2015), is a valid kernel between sets of persistence tuples.
+This permits us to deﬁne a variant of P-WL for uniform   We deﬁne the degree-based persistent WL kernel as
+edge weights. In the preceding paragraph, we already estab-         ∑
+lished the equivalence of the vertex features to the original          kP-WL(D, D′) :=    kPSS (h)(DG, DG′),    (14)
+subtree features. Our ﬁltration additionally leads to cycle                            h
+features, which degenerate to cycle counts in the uniform
+                                                    which is a valid kernel because the sum of kernels is also a
+case. We use these counts to obtain a feature vector anal-
+                                                             kernel (Hofmann et al. 2008). In practice, kPSS is generalogously to Eq. 11. The resulting method, which we refer
+                                                     and can be applied to all valid ﬁltrations; we restrict its us-
+to as P-WL-UC (uniform metric with cycles), enriches the
+                                                              age, and hence our kP-WL kernel, to the (smoothed) degreeWL subtree features with cycle counts.
+                                                           information in this paper. In the experimental section, we
+                                                                 will use P-WL-D to denote this kernel.
+2.3.4. P-WL FOR NON-ATTRIBUTED GRAPHS
+
+Application domains such as social network analysis tend    3. Experiments
+to make use of non-attributed graphs, i.e. graphs without
+any attributes (node labels, edge labels, etc.). While it is    In the following, we describe the practical performance of
+possible to apply the WL subtree feature generation ap-    our methods on numerous graph classiﬁcation benchmark
+proach here through the assignment of uniform labels in the    data sets.  Since all of our methods can be seen as gen-
+ﬁrst step of the algorithm, we propose a new method that     eralised variants of WL subtree features (Shervashidze &
+is inspired by the stabilisation procedure while also being    Borgwardt 2009, Shervashidze et al. 2011), we primarily
+                  A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+compare against them under the same training conditions.    Overall, we observe that our novel persistent features are
+Moreover, we show histogram kernels to establish base-    favourable: their mean accuracy is either higher than that of
+lines for each of the data sets. Methods marked with an    the original subtree features, or very close to them; we use
+asterisk indicate that the results have initially been reported    a bold font to indicate the highest mean accuracy, marking
+in another paper.                                             multiple cells whenever one of our methods is able to out-
+                                                       perform the respective SOTA method. Interestingly, P-WL,
+Setup  We follow the standard setup for graph classiﬁca-   which only uses persistent variants of the subtree features,
+tion and perform a 10-fold cross-validation that we repeat    does not outperform any method on these data sets, except
+10 times, reporting the average and standard deviation for     for PTC-MM. On NCI1 and NCI109, P-WL performance
+all runs. For hyperparameter tuning, we use an inner 5-fold    gets close to the best result, with a slightly smaller standard
+cross-validation on each of the training splits to perform a     deviation. For D & D, P-WL exhibits the best mean accu-
+grid search. Since we want to show that our proposed en-    racy of our methods, but it is still unable to match RETGK.
+richment of the original subtree features is beneﬁcial, we    In general, we observe that the addition of cycle features
+use a random forest classiﬁer (Breiman 2001) to compare    following Eq. 11 is beneﬁcial for most data sets, and even
+P-WL, P-WL-C, and P-WL-UC against WL. For P-WL-    the uniform-weighted variant of our algorithm that includes
+D and for the histogram kernels, we use a support vec-    cycles, i.e. P-WL-UC, is seen to perform well.
+tor machine (Cortes & Vapnik 1995). As for the hyperpa-
+                                                       For the toxicology challenge data sets (Helma et al. 2001)
+rameters, we choose p ∈{1, 2} for P-WL and P-WL-C,
+                                              PTC-MR, PTC-FR, PTC-MM, and PTC-FM, our features
+and h ∈{0, . . . , 10} for methods based on WL features,
+                                                              are favourable in comparison to the original subtree fea-
+whereas we choose C ∈{0.1, 1, 10} for training an SVM
+                                                                 tures and the deep graph kernel features. Each of these data
+on the P-WL-D kernel values.  Moreover, since we did
+                                                                    sets is known to be hard to classify, but our methods im-
+not observe an effect in changing σ for P-WL-D, we leave
+                                                        prove on the accuracies reported for RETGK on three out
+σ = 1.0 ﬁxed.
+                                                             of the four data sets. Again, we observe that the inclusion
+                                                             of cycles positively impacts predictive performance. P-WL
+Data sets  We use common graph benchmark data sets
+                                                                exhibits a higher mean accuracy than WL on PTC-MM,
+in our experiments, comprising graphs from chemoinfor-
+                                                         while staying very close to its performance on the other
+matics problems (Debnath et al. 1991), toxicology predic-
+                                                             data sets. Interestingly, while P-WL-C performs best over-
+tion (Helma et al. 2001), protein function/structure predic-
+                                                                                 all, the unweighted cycle-based variant P-WL-UC also has
+tion (Borgwardt et al. 2005, Dobson & Doig 2003), carcino-
+                                                         a higher mean accuracy than the SOTA method on three of
+genicity prediction (Wale et al. 2008), and social network
+                                                              these data sets, which demonstrates the relevance of cycles.
+analysis (Leskovec et al. 2005, Yanardag & Vishwanathan
+2015).
+                                                                    3.2. Investigating the Inﬂuence of h
+
+Implementation  We  implemented  our  methods  in   By changing the parameter h, the WL sequence of graphs
+Python. Please refer to our repository5 for the code and     starts to include more global information about the neigh-
+additional experiments.                                    bourhoods, while at the same time increasing the runtime.
+                                                                                   It is thus beneﬁcial to keep h as small as possible while
+3.1. Results for Node-Labelled Graphs                     maintaining high predictive accuracy. To analyse the effect
+                                                             of h on accuracy, we exemplarily use the PTC-MR data set
+Table 1 shows the results of our methods for the classiﬁca-                                                     and train the same classiﬁer with both the WL subtree fea-
+tion of node-labelled graphs. Two histogram kernel meth-                                                                 tures and our novel persistent features (using p = 1). Since
+ods (one using vertices, the other one using edges) pro-                                                              the purpose of this experiment is to compare the behaviour
+vide a simple baseline. Moreover, we show the accuracies                                                             of both types of features at the same subtree depth h, we do
+that we obtain for the Weisfeiler–Lehman (WL) subtree                                                            not perform an additional grid search, leading to slightly
+features, plus the accuracies for the deep variant of these                                                                   different accuracies than the ones reported in Table 1.
+features (DEEP-WL). This framework (Yanardag & Vish-
+wanathan 2015) involves a weight scheme for the subtree    Figure 2 depicts the results. We observe that persistent
+features, but unlike our novel topology-based assignment     features (orange, violet) tend to reach higher mean accu-
+described in Section 2.3.2, DEEP-WL aims to learn those     racies at smaller values of h. In particular P-WL-C, with
+weights based on the data set. As the most recent state-     its usage of cycle features, reaches its maximum accuracy
+of-the-art (SOTA) comparison partner, we use RETGK, a     for smaller values of h than WL. In our other experiments,
+graph kernel based on the return probabilities of random   we also observed that whenever one of our methods outper-
+walks (Zhang et al. 2018).                                forms WL in terms of mean accuracy, it requires on aver-
+                                                       age a lower value of h to do so. As h inﬂuences the size of
+   5https://github.com/BorgwardtLab/P-WL
+                  A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+
+               D & D      MUTAG       NCI1      NCI109    PROTEINS    PTC-MR     PTC-FR     PTC-MM     PTC-FM
+
+    V-Hist        78.32 ± 0.35   85.96 ± 0.27   64.40 ± 0.07   63.25 ± 0.12   72.33 ± 0.32   58.31 ± 0.27   68.13 ± 0.23   66.96 ± 0.51   57.91 ± 0.83
+    E-Hist        72.90 ± 0.48   85.69 ± 0.46   63.66 ± 0.11   63.27 ± 0.07   72.14 ± 0.39   55.82 ± 0.00   65.53 ± 0.00   61.61 ± 0.00   59.03 ± 0.00
+   RETGK∗      81.60 ± 0.30   90.30 ± 1.10   84.50 ± 0.20                  75.80 ± 0.60   62.15 ± 1.60   67.80 ± 1.10   67.90 ± 1.40   63.90 ± 1.30
+
+  WL           79.45 ± 0.38   87.26 ± 1.42   85.58 ± 0.15   84.85 ± 0.19   76.11 ± 0.64   63.12 ± 1.44   67.64 ± 0.74   67.28 ± 0.97   64.80 ± 0.85
+   DEEP-WL∗                   82.94 ± 2.68   80.31 ± 0.46   80.32 ± 0.33   75.68 ± 0.54   60.08 ± 2.55
+
+   P-WL        79.34 ± 0.46   86.10 ± 1.37   85.34 ± 0.14   84.78 ± 0.15   75.31 ± 0.73   63.07 ± 1.68   67.30 ± 1.50   68.40 ± 1.17   64.47 ± 1.84
+   P-WL-C      78.66 ± 0.32   90.51 ± 1.34   85.46 ± 0.16   84.96 ± 0.34   75.27 ± 0.38   64.02 ± 0.82   67.15 ± 1.09   68.57 ± 1.76   65.78 ± 1.22
+   P-WL-UC    78.50 ± 0.41   85.17 ± 0.29   85.62 ± 0.27   85.11 ± 0.30   75.86 ± 0.78   63.46 ± 1.58   67.02 ± 1.29   68.01 ± 1.04   65.44 ± 1.18
+
+
+Table 1. Classiﬁcation accuracies for node-labelled graphs. Empty cells are used to indicate data sets that do not report accuracies on a
+certain data set. We used the highest available accuracy values from the respective publications for all cited algorithms (marked with ∗).
+
+
+                                                        73.02 ± 0.95 using P-WL-UC (with uniform node labels
+      66                                                    as described above). However, on average, P-WL-UC uses
+      65                                                     subtree features with h = 2. This shows the favourable
+      64                                                performance of topological features in a continuous setting.      percent)
+      63                                              These results are to be taken with a grain of salt, though, be-  (in
+      62                                                 cause a recent preprint (Cai & Wang 2018) reports that all
+                                                               non-attributed graph data sets that are currently available      61
+                                         WL            to the community can equally well be classiﬁed by simple      60      Accuracy                                              P-WL         low-dimensional local degree features.
+
+                                                     P-WL-C
+
+            0  1  2  3  4  5  6  7  8  9  10        4. Discussion
+                       h                 We augmented Weisfeiler–Lehman (WL) subtree features
+                                                         with topological information to improve graph classiﬁca-
+Figure 2. Performance of the WL subtree features and the persis-    tion performance. To this end, we developed a distance
+tent features for the PTC-MR data set. WL requires higher values    between multiset labels and deﬁned a subgraph-based ﬁl-
+of h to reach a suitable predictive performance.                                                                    tration that generalises WL subtree features. Our method
+                                                   manages to efﬁciently include low-dimensional topological
+                                                       features—connected components and cycles—for classify-
+the subtree features, obtaining higher accuracies for lower    ing node-labelled and non-attributed graphs. Experiments
+values of h is a desirable property.                       on several data sets show a generally favourable perfor-
+                                                 mance of our persistent feature vectors. The integration
+3.3. Results for Non-Attributed Graphs                     of cycle-based features is thus shown to be capable of im-
+                                                         proving classiﬁcation performance.
+For non-attributed graphs, a common strategy is to use
+uniform labels before applying a subtree-based method.    Future work will involve analysing different metrics for
+This is equivalent to using vertex degrees as categorical    multiset labels; we also conjecture that “robust” ﬁltra-
+node labels. To determine the information carried by these     tions (Anai et al. 2018, Chazal et al. 2018) will be bene-
+labels, we remove all node labels from the PROTEINS     ﬁcial. The use of other kernels for comparing subtree fea-
+data and apply the degree propagation procedure from Sec-    tures might also lead to performance increases. Optimal
+tion 2.3.4.  For a maximum of h = 5 accumulation op-    assignment kernels (Kriege et al. 2016) are particularly in-
+erations, P-WL-D achieves an accuracy of 73.31 ± 0.53.    teresting because of their favourable performance and con-
+While this is not on a par with WL, it demonstrates the po-    ceptual similarity to distance measures for persistence tu-
+tential of using only degree information: ﬁltrations can be    ples (Cohen-Steiner et al. 2007). Similarly, for P-WL-D,
+made sparse (Sheehy 2013), so P-WL-D could scale better     different kernels between persistence representations can
+to larger data sets than subtree features, thus providing a    be investigated (Carrière et al. 2017, Kusano et al. 2018).
+trade-off between runtime and predictive performance.       The extension of this method to higher-dimensional con-
+                                                            tinuous node features is also desirable. While the theory
+We also applied P-WL-D  to IMDB-BINARY, a non-
+                                                        behind multidimensional persistence (Carlsson & Zomoro-
+attributed graph data set. Using node degrees without any
+                                                           dian 2009) is considerably more involved than for the one-
+propagation, i.e. h =  0, we obtain a mean accuracy of
+                                                         dimensional case, a recent preprint (Corbet et al. 2018) in-
+72.88 ± 0.55, which is higher than the accuracy reported
+                                                            troduces a new kernel method for these representations.
+by RETGK (72.3 ± 0.6). We can obtain an accuracy of
+                  A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+Acknowledgements                                    Cohen-Steiner, D., Edelsbrunner, H., and Harer, J. Stabil-
+                                                                           ity of persistence diagrams. Discrete & Computational
+We thank the anonymous reviewers for their detailed com-                                                        Geometry, 37(1):103–120, 2007.
+ments, which helped us improve the paper. We also thank
+Max Horn and Michael Moor for valuable discussions.        Corbet, R., Fugacci, U., Kerber, M., Landi, C., and Wang,
+                                                         B. A kernel for multi-parameter persistent homology. art.
+References                                               arXiv:1809.10231, 2018.
+Anai, H., Chazal, F., Glisse, M., Ike, Y., Inakoshi, H., Tinar-   Cormen, T. H., Leiserson, C. E., Rivest, R. L., and Stein, C.
+   rage, R., and Umeda, Y.  DTM-based ﬁltrations.   art.      Introduction to algorithms. MIT Press, Cambridge, MA,
+  arXiv:1811.04757, 2018.                           USA, 3rd edition, 2009.
+
+                                                              Cortes, C. and Vapnik, V. Support-vector networks. Ma-Babai, L. and Kucera, L.  Canonical labelling of graphs
+                                                             chine Learning, 20(3):273–297, 1995.   in linear average time.  In 20th Annual Symposium on
+  Foundations of Computer Science, pp. 39–46, 1979.                                                        Debnath, A. K., Lopez de Compadre, R. L., Debnath, G.,
+                                                          Shusterman, A. J., and Hansch, C.  Structure-activity
+Borgwardt, K. and Kriegel, H.-P. Shortest-path kernels on
+                                                                   relationship of mutagenic aromatic and heteroaromatic
+   graphs.  In Proceedings of the 5th IEEE International
+                                                                      nitro compounds. Correlation with molecular orbital en-
+  Conference on Data Mining (ICDM), pp. 74–81, Wash-
+                                                                   ergies and hydrophobicity. Journal of Medicinal Chem-
+   ington, DC, USA, 2005. IEEE Computer Society.
+                                                                              istry, 34(2):786–797, 1991.
+Borgwardt, K. M., Ong, C.  S.,  Schönauer,  S.,  Vish-
+                                                     Dobson, P. D. and Doig, A. J. Distinguishing enzyme struc-
+  wanathan, S., Smola, A. J., and Kriegel, H.-P.  Protein
+                                                                    tures from non-enzymes without alignments. Journal of
+   function prediction via graph kernels.  Bioinformatics,
+                                                         Molecular Biology, 330(4):771–783, 2003.
+  21(suppl_1):i47–i56, 2005.
+                                                         Douglas, B. L. The Weisfeiler–Lehman method and graph
+Breiman, L. Random forests. Machine Learning, 45(1):                                                       isomorphism testing. art. arXiv:1101.5211, 2011.
+  5–32, 2001.
+                                                    Duvenaud, D., Maclaurin, D., Aguilera-Iparraguirre,  J.,
+Cai, C. and Wang, Y. A simple yet effective baseline for      Gómez-Bombarelli, R., Hirzel, T., Aspuru-Guzik, A.,
+   non-attribute graph classiﬁcation. art. arXiv:1811.03508,      and Adams, R. P. Convolutional networks on graphs for
+  2018.                                                        learning molecular ﬁngerprints. In Cortes, C., Lawrence,
+                                                      N. D., Lee, D. D., Sugiyama, M., and Garnett, R. (eds.),
+Carlsson, G. Topology and data. Bulletin of the American                                                       Advances in Neural Information Processing Systems 28,
+  Mathematical Society, 46(2):255–308, 2009.                                                               pp. 2224–2232. Curran Associates, Inc., 2015.
+
+Carlsson, G. and Zomorodian, A. J. The theory of multi-    Edelsbrunner, H. and Harer, J.  Persistent homology—a
+  dimensional persistence. Discrete & Computational Ge-       survey.  In Goodman, J. E., Pach,  J., and Pollack, R.
+  ometry, 42(1):71–93, 2009.                                        (eds.), Surveys on discrete and computational geometry:
+                                                       Twenty years later, number 453 in Contemporary Math-
+Carrière, M., Cuturi, M., and Oudot, S. Sliced Wasserstein                                                                ematics, pp. 257–282. American Mathematical Society,
+   kernel for persistence diagrams. In Precup, D. and Teh,                                                             Providence, RI, USA, 2008.
+  Y. W. (eds.), Proceedings of the 34th International Con-
+   ference on Machine Learning (ICML), volume 70, pp.    Edelsbrunner, H. and Harer, J.  Computational topology:
+  664–673. PMLR, 2017.                            An introduction. American Mathematical Society, Provi-
+                                                             dence, RI, USA, 2010.
+Carstens, C. J.  Topology of Complex Networks: Models
+  and Analysis. PhD thesis, RMIT University, 2016.          Edelsbrunner, H. and Morozov, D.   Persistent homol-
+                                                           ogy: Theory and practice.  In Latała, R., Ruci´nski, A.,
+Chazal, F., Fasy, B., Lecci, F., Michel, B., Rinaldo, A., and       Strzelecki,  P., ´Swi˛atkowski,  J., Wrzosek, D., and Za-
+  Wasserman, L. Robust topological inference: Distance       krzewski, P. (eds.), European Congress of Mathemat-
+   to a measure and kernel distance.  Journal of Machine        ics. European Mathematical Society Publishing House,
+  Learning Research, 18(159):1–40, 2018.                      Zürich, Switzerland, 2014.
+
+Chen, C. and Kerber, M. An output-sensitive algorithm for    Edelsbrunner, H., Letscher, D., and Zomorodian, A.  J.
+   persistent homology.  Computational Geometry, 46(4):      Topological persistence and simpliﬁcation.  Discrete &
+  435–447, 2013.                                         Computational Geometry, 28(4):511–533, 2002.
+                 A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+Gärtner, T., Flach, P., and Wrobel, S. On graph kernels:    Kusano,  G., Fukumizu,  K., and Hiraoka, Y.   Kernel
+  Hardness results and efﬁcient alternatives. In Schölkopf,     method for persistence diagrams via kernel embedding
+  B. and Warmuth, M. K. (eds.), Learning Theory and Ker-     and weight factor.  Journal of Machine Learning Re-
+  nel Machines, pp. 129–143, Heidelberg, Germany, 2003.      search, 18(189):1–41, 2018.
+  Springer.
+                                                                Lei, T., Jin, W., Barzilay, R., and Jaakkola, T.  Deriving
+Ghrist, R. Barcodes: The persistent topology of data. Bul-      neural architectures from sequence and graph kernels. In
+   letin of the American Mathematical Society, 45(1):61–      Precup, D. and Teh, Y. W. (eds.), Proceedings of the 34th
+  75, 2008.                                                     International Conference on Machine Learning (ICML),
+                                                     volume 70, pp. 2024–2033. PMLR, 2017.Gross, J. L. and Tucker, T. W. Topological graph theory.
+  Wiley, New York, NY, USA, 1987.
+                                                        Leskovec, J., Kleinberg, J., and Faloutsos, C. Graphs over
+Hatcher, A.  Algebraic topology.  Cambridge University       time: Densiﬁcation laws, shrinking diameters and pos-
+   Press, Cambridge, England, 2002.                               sible explanations.  In Proceedings of the 11th ACM
+                                           SIGKDD International Conference on Knowledge Dis-
+Haussler, D.  Convolution kernels on discrete structures.      covery in Data Mining (KDD), pp. 177–187, New York,
+  Technical report, University of California at Santa Cruz,     NY, USA, 2005. ACM.
+  1999.
+                                                 Munch, E. A user’s guide to topological data analysis. Jour-
+Helma, C., King, R. D., Kramer, S., and Srinivasan, A. The
+                                                              nal of Learning Analytics, 4(2):47–61, 2017.
+  Predictive Toxicology Challenge 2000–2001.  Bioinfor-
+  matics, 17(1):107–108, 2001.                                   Ó Searcóid, M.  Metric spaces.  Springer Undergraduate
+                                                        Mathematics Series. Springer, London, England, 2007.Hofmann, T., Schölkopf, B., and Smola, A. J. Kernel meth-
+  ods in machine learning. The Annals of Statistics, 36(3):
+                                                Ramon, J. and Gärtner, T.  Expressivity versus efﬁciency
+  1171–1220, 2008.
+                                                               of graph kernels. In Proceedings of the 1st International
+Hopcroft, J. and Tarjan, R. Algorithm 447: Efﬁcient algo-     Workshop on Mining Graphs, Trees and Sequences, pp.
+  rithms for graph manipulation. Communications of the      65–74, 2003.
+  ACM, 16(6):372–378, 1973.
+                                                          Reininghaus, J., Huber, S., Bauer, U., and Kwitt, R. A sta-
+Horak, D., Maleti´c, S., and Rajkovi´c, M.  Persistent ho-      ble multi-scale kernel for topological machine learning.
+  mology of complex networks. Journal of Statistical Me-      In Proceedings of the IEEE Conference on Computer Vi-
+  chanics: Theory and Experiment, 2009(03):P03034:1–      sion and Pattern Recognition (CVPR), pp. 4741–4748,
+  P03034:24, 2009.                                        2015.
+
+Horváth, T., Gärtner, T., and Wrobel, S. Cyclic pattern ker-                                                           Rieck, B., Fugacci, U., Lukasczyk, J., and Leitte, H. Clique
+  nels for predictive graph mining. In Proceedings of the                                                    community persistence: A topological visual analysis ap-
+  10th ACM SIGKDD International Conference on Knowl-                                                          proach for complex networks.  IEEE Transactions on
+  edge Discovery and Data Mining (KDD), pp. 158–167,                                                                  Visualization and Computer Graphics, 24(1):822–831,
+  New York, NY, USA, 2004. ACM.                                                          2018.
+
+Jonsson, J. Simplicial complexes of graphs, volume 1928
+                                                           Rieck, B., Togninalli, M., Bock, C., Moor, M., Horn, M.,
+  of Lecture Notes in Mathematics. Springer, Heidelberg,
+                                                    Gumbsch, T., and Borgwardt, K. Neural persistence: A
+  Germany, 2008.
+                                                           complexity measure for deep neural networks using alge-
+Kashima, H., Tsuda, K., and Inokuchi, A.  Marginalized       braic topology. In International Conference on Learning
+  kernels between labeled graphs.   In Fawcett, T. and      Representations (ICLR), 2019.
+  Mishra, N. (eds.), Proceedings of the 20th International
+  Conference on Machine Learning (ICML), pp. 321–328.    Sheehy, D. R. Linear-size approximations to the Vietoris–
+  AAAI Press, 2003.                                       Rips ﬁltration. Discrete & Computational Geometry, 49
+                                                             (4):778–796, 2013.
+Kriege, N. M., Giscard, P.-L., and Wilson, R. On valid op-
+  timal assignment kernels and applications to graph clas-    Shervashidze, N. and Borgwardt, K. Fast subtree kernels on
+   siﬁcation. In Lee, D. D., Sugiyama, M., Luxburg, U. V.,      graphs. In Bengio, Y., Schuurmans, D., Lafferty, J. D.,
+  Guyon, I., and Garnett, R. (eds.), Advances in Neural In-      Williams, C. K. I., and Culotta, A. (eds.), Advances in
+  formation Processing Systems 29, pp. 1623–1631. Cur-      Neural Information Processing Systems 22, pp. 1660–
+  ran Associates, Inc., 2016.                                 1668. Curran Associates, Inc., 2009.
+                 A Persistent Weisfeiler–Lehman Procedure for Graph Classiﬁcation
+
+Shervashidze, N., Vishwanathan, S., Petri, T., Mehlhorn,
+  K., and Borgwardt, K.  Efﬁcient graphlet kernels for
+   large graph comparison.  In van Dyk, D. and Welling,
+  M. (eds.), Proceedings of the 12th International Confer-
+  ence on Artiﬁcial Intelligence and Statistics (AISTATS),
+  volume 5, pp. 488–495. PMLR, 2009.
+
+Shervashidze,  N., Schweitzer,  P., van Leeuwen, E.  J.,
+  Mehlhorn,  K., and Borgwardt, K. M.   Weisfeiler–
+  Lehman graph kernels.  Journal of Machine Learning
+  Research, 12:2539–2561, 2011.
+
+Sizemore, A., Giusti, C., and Bassett, D. S. Classiﬁcation
+  of weighted networks through mesoscale homological
+   features.  Journal of Complex Networks, 5(2):245–273,
+  2017.
+
+Sugiyama, M. and Borgwardt, K. Halting in random walk
+   kernels.  In Cortes, C., Lawrence, N. D., Lee, D. D.,
+  Sugiyama, M., and Garnett, R. (eds.), Advances in Neu-
+   ral Information Processing Systems 28, pp. 1639–1647.
+  Curran Associates, Inc., 2015.
+
+Vishwanathan, S., Schraudolph, N. N., Kondor, R., and
+  Borgwardt, K. M. Graph kernels. Journal of Machine
+  Learning Research, 11:1201–1242, 2010.
+
+Wale, N., Watson, I. A., and Karypis, G. Comparison of
+   descriptor spaces for chemical compound retrieval and
+   classiﬁcation. Knowledge and Information Systems, 14
+  (3):347–375, 2008.
+
+Weisfeiler, B. and Lehman, A. A. The reduction of a graph
+   to canonical form and the algebra which appears therein.
+  Nauchno–Technicheskaja Informatsia, 9:12–16, 1968.
+
+Yanardag, P. and Vishwanathan, S.  Deep graph kernels.
+  In Proceedings of the 21th ACM SIGKDD International
+  Conference on Knowledge Discovery and Data Min-
+  ing (KDD), pp. 1365–1374, New York, NY, USA, 2015.
+  ACM.
+
+Zhang, Z., Wang, M., Xiang, Y., Huang, Y., and Neho-
+   rai, A.  RetGK: Graph kernels based on return proba-
+   bilities of random walks.  In Bengio, S., Wallach, H.,
+  Larochelle, H., Grauman, K., Cesa-Bianchi, N., and Gar-
+   nett, R. (eds.), Advances in Neural Information Process-
+  ing Systems 31, pp. 3968–3978. Curran Associates, Inc.,
+  2018.
+
+Zomorodian, A. J. and Carlsson, G. Computing persistent
+  homology. Discrete & Computational Geometry, 33(2):
+  249–274, 2005.

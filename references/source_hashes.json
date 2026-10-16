@@ -1,0 +1,13 @@
+{
+  "LICENSE.md": "22985be9ebf1121b87607cdbcfc2b640ab812ba25458e9b6ccdabbda3d983ac2",
+  "paper.pdf": "eb8ced7cad5c1862ceb9172b2320d5ca7e74e9e6acb48a47f7b6141c04022978",
+  "wl-paper.pdf": "251455e12994924700a3931a0ba10cabb47dc1ad97690b5d05c2c55f94dfd8b5",
+  "features.py": "84120e93d572e92ba3516952398645ca763115126b003bf1c1e6b44839c0bbb1",
+  "README.md": "3a686f5fcbab012c9d2a121f8288f8d9d6b98da3e50b11a5f8bbe26097efa073",
+  "weisfeiler_lehman.py": "71f43582f459fc485b54a5a26b1daf13cbd415465f0f99fa401d920434dd9f0e",
+  "grid_search.py": "4ba44740bcc172335bd9eff1c3d8cea2754d9c7e1bb8da97f4345089ead3af38",
+  "grid_search_pwl.py": "4f5446781a679b981ee806f6cea33a888ba2043ebc3a611186437eb99b8d6c7f",
+  "topology.py": "b8f0fa9e184155c93f9636254ad9fa9d5e30e22beaae3a435cc0f579a78e9392",
+  "run_grid_searches.sh": "d325f35eef2bbf99a52c6ada9c762035beab90062e035f48fd2bde7e804064aa",
+  "main.py": "d321a0265b83dee574d83c03384595bdbc7cb5b66aa6834bdb46dae97aa4c51f"
+}
